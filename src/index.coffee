@@ -81,7 +81,7 @@ _shimmedWithDependencies = (mimosaConfig, rc) ->
            """
     end: """
          return require('#{mimosaConfig.libraryPackage.main}');
-         }))"
+         }))
          """
 
 _noShimNoDependencies = (mimosaConfig, rc) ->
