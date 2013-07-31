@@ -9,7 +9,7 @@ exports.defaults = ->
       shimmedWithDependencies: true
       noShimNoDependencies: true
       noShimWithDependencies: true
-    outFolder: "dist"
+    outFolder: "build"
     globalName: null
     name: null
     main: null
@@ -40,7 +40,7 @@ exports.placeholder = ->
         # shimmedWithDependencies:true
         # noShimNoDependencies:true
         # noShimWithDependencies:true
-      # outFolder: "dist"       # the name of the folder, relative to the root of the project,
+      # outFolder: "build"      # the name of the folder, relative to the root of the project,
                                 # to place the packaged output.
       # globalName: null        # Required if shimmedWithDependencies is set to true. The global
                                 # name of the library for use in non module-managed situations.
