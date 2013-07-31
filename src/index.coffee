@@ -104,7 +104,7 @@ _noShimFragment = (mimosaConfig) ->
        define(['#{mimosaConfig.libraryPackage.main}'], function(lib) {
          return lib;
        });
-       })
+       })()
        """
 
 module.exports =
