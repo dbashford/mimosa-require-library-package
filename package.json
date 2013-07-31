@@ -1,0 +1,37 @@
+{
+  "name": "mimosa-require-library-package",
+  "version": "0.0.1",
+  "homepage": "https://github.com/dbashford/mimosa-require-library-package",
+  "author": "David Bashford",
+  "description": "A library packaging module for Mimosa",
+  "contributors": [
+    {
+      "name": "David Bashford",
+      "email": "dbashford@hotmail.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dbashford/mimosa-require-library-package"
+  },
+  "keywords": [
+    "mimosa",
+    "mmodule",
+    "requirejs",
+    "library",
+    "r.js",
+    "packaging",
+    "package"
+  ],
+  "dependencies": {
+    "logmimosa": "0.5.0"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "main": "./lib/index",
+  "scripts": {
+    "prepublish": "mimosa build"
+  }
+}
