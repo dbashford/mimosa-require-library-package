@@ -10,6 +10,7 @@ exports.defaults = ->
       noShimNoDependencies: true
       noShimWithDependencies: true
     outFolder: "dist"
+    globalName: null
     name: null
     main: null
     removeDependencies: []
@@ -41,6 +42,9 @@ exports.placeholder = ->
         # noShimWithDependencies:true
       # outFolder: "dist"       # the name of the folder, relative to the root of the project,
                                 # to place the packaged output.
+      # globalName: null        # Required if shimmedWithDependencies is set to true. The global
+                                # name of the library for use in non module-managed situations.
+                                # i.e. "$" or "Backbone"
       # name:null               # Name of library.  Ex: "jquery.foo.js". This will be used as the
                                 # output file name for the optimization.  Required.
       # main:null               # The AMD path to the root/entry point of your library.
@@ -56,7 +60,9 @@ exports.validate = (config, validators) ->
     if validators.ifExistsIsObject(errors, "libraryPackage.packaging", config.libraryPackage.packaging)
       p = config.libraryPackage.packaging
       # validators.booleanMustExist(errors, "libraryPackage.packaging.shimmedNoDependencies", p.shimmedNoDependencies)
-      validators.booleanMustExist(errors, "libraryPackage.packaging.shimmedWithDependencies", p.shimmedWithDependencies)
+      if validators.booleanMustExist(errors, "libraryPackage.packaging.shimmedWithDependencies", p.shimmedWithDependencies)
+        if p.shimmedWithDependencies
+          validators.stringMustExist(errors, "libraryPackage.globalName", config.libraryPackage.globalName)
       validators.booleanMustExist(errors, "libraryPackage.packaging.noShimNoDependencies", p.noShimNoDependencies)
       validators.booleanMustExist(errors, "libraryPackage.packaging.noShimWithDependencies", p.noShimWithDependencies)
 

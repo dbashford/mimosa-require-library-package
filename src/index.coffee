@@ -68,9 +68,21 @@ _shimmedNoDependencies = (mimosaConfig, rc) ->
 _shimmedWithDependencies = (mimosaConfig, rc) ->
   rc.out = path.join mimosaConfig.libraryPackage.outFolder, "shimmedWithDependencies", mimosaConfig.libraryPackage.name
   rc.include = [mimosaConfig.libraryPackage.main]
-  rc.insertRequire = [mimosaConfig.libraryPackage.main]
-  rc.wrap = true
   rc.name = "almond"
+  rc.wrap =
+    start: """
+           (function (root, factory) {
+             if (typeof define === 'function' && define.amd) {
+               define(factory);
+             } else {
+               root.#{mimosaConfig.libraryPackage.globalName} = factory();
+             }
+           }(this, function () {
+           """
+    end: """
+         return require('#{mimosaConfig.libraryPackage.main}');
+         }))"
+         """
 
 _noShimNoDependencies = (mimosaConfig, rc) ->
   rc.out = path.join mimosaConfig.libraryPackage.outFolder, "noShimNoDependencies", mimosaConfig.libraryPackage.name
