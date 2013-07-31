@@ -1,6 +1,6 @@
 {
   "name": "mimosa-require-library-package",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "homepage": "https://github.com/dbashford/mimosa-require-library-package",
   "author": "David Bashford",
   "description": "A library packaging module for Mimosa",

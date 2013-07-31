@@ -1,5 +1,7 @@
 "use strict"
 
+path = require "path"
+
 exports.defaults = ->
   libraryPackage:
     packaging:
@@ -7,9 +9,11 @@ exports.defaults = ->
       shimmedWithDependencies: true
       noShimNoDependencies: true
       noShimWithDependencies: true
+    outFolder: "dist"
     name: null
     main: null
     removeDependencies: []
+
 
 exports.placeholder = ->
   """
@@ -34,7 +38,8 @@ exports.placeholder = ->
         # shimmedWithDependencies:true
         # noShimNoDependencies:true
         # noShimWithDependencies:true
-      # outFolder: "dist"       # the name of the folder to place the packaged output.
+      # outFolder: "dist"       # the name of the folder, relative to the root of the project,
+                                # to place the packaged output.
       # name:null               # Name of library.  Ex: "jquery.foo.js". This will be used as the
                                 # output file name for the optimization.  Required.
       # main:null               # The AMD path to the root/entry point of your library.
@@ -46,18 +51,19 @@ exports.placeholder = ->
 
 exports.validate = (config, validators) ->
   errors = []
-  if validators.ifExistsisObject(errors, "libraryPackage config", config.libraryPackage)
-    if validators.ifExistsisObject(errors, "libraryPackage.packaging", config.libraryPackage.packaging)
+  if validators.ifExistsIsObject(errors, "libraryPackage config", config.libraryPackage)
+    if validators.ifExistsIsObject(errors, "libraryPackage.packaging", config.libraryPackage.packaging)
       p = config.libraryPackage.packaging
       validators.booleanMustExist(errors, "libraryPackage.packaging.shimmedNoDependencies", p.shimmedNoDependencies)
       validators.booleanMustExist(errors, "libraryPackage.packaging.shimmedWithDependencies", p.shimmedWithDependencies)
       validators.booleanMustExist(errors, "libraryPackage.packaging.noShimNoDependencies", p.noShimNoDependencies)
       validators.booleanMustExist(errors, "libraryPackage.packaging.noShimWithDependencies", p.noShimWithDependencies)
 
-    validators.stringMustExist(errors, "libraryPackage.outFolder", config.libraryPackage.outFolder)
+    if validators.ifExistsIsString(errors, "libraryPackage.outFolder", config.libraryPackage.outFolder)
+      config.libraryPackage.outFolderFull = path.join config.root, config.libraryPackage.outFolder
     validators.stringMustExist(errors, "libraryPackage.name", config.libraryPackage.name)
     validators.stringMustExist(errors, "libraryPackage.main", config.libraryPackage.main)
 
-    validators.isArrayOfStringsMustExist(errors, "libraryPackage.removeDependencies", config.libraryPackage.removeDependencies)
+    validators.isArrayOfStrings(errors, "libraryPackage.removeDependencies", config.libraryPackage.removeDependencies)
 
   errors
