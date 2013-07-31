@@ -5,7 +5,7 @@ path = require "path"
 exports.defaults = ->
   libraryPackage:
     packaging:
-      shimmedNoDependencies: true
+      # shimmedNoDependencies: true
       shimmedWithDependencies: true
       noShimNoDependencies: true
       noShimWithDependencies: true
@@ -15,6 +15,11 @@ exports.defaults = ->
     removeDependencies: []
 
 
+# - "shimmedNoDependencies" excludes dependencies configured with the removeDependencies
+# property below, and includes an AMD shim (Almond) for use when exporting the library to
+# non-AMD settings.
+# shimmedNoDependencies:true
+
 exports.placeholder = ->
   """
   \t
@@ -23,9 +28,6 @@ exports.placeholder = ->
       ###
       # "packaging" provides four options for packaging your library. By default all are enabled.
       # Each option will deliver the compiled asset to a folder named for the packaging type.
-      # - "shimmedNoDependencies" excludes dependencies configured with the removeDependencies
-      # property below, and includes an AMD shim (Almond) for use when exporting the library to
-      # non-AMD settings.
       # - "shimmedWithDependencies" a fully batteries included version of your library. Includes
       # an AMD shim (Almond) and does not exclude any dependencies.
       # - "noShimNoDependencies" does not provide an AMD shim and excludes those dependencies
@@ -34,7 +36,6 @@ exports.placeholder = ->
       # listed in removeDependencies
       ###
       # packaging:
-        # shimmedNoDependencies:true
         # shimmedWithDependencies:true
         # noShimNoDependencies:true
         # noShimWithDependencies:true
@@ -54,7 +55,7 @@ exports.validate = (config, validators) ->
   if validators.ifExistsIsObject(errors, "libraryPackage config", config.libraryPackage)
     if validators.ifExistsIsObject(errors, "libraryPackage.packaging", config.libraryPackage.packaging)
       p = config.libraryPackage.packaging
-      validators.booleanMustExist(errors, "libraryPackage.packaging.shimmedNoDependencies", p.shimmedNoDependencies)
+      # validators.booleanMustExist(errors, "libraryPackage.packaging.shimmedNoDependencies", p.shimmedNoDependencies)
       validators.booleanMustExist(errors, "libraryPackage.packaging.shimmedWithDependencies", p.shimmedWithDependencies)
       validators.booleanMustExist(errors, "libraryPackage.packaging.noShimNoDependencies", p.noShimNoDependencies)
       validators.booleanMustExist(errors, "libraryPackage.packaging.noShimWithDependencies", p.noShimWithDependencies)

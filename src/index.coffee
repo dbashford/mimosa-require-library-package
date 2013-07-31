@@ -4,6 +4,7 @@ path = require "path"
 fs = require "fs"
 
 logger = require "logmimosa"
+wrench = require "wrench"
 
 config = require './config'
 
@@ -12,22 +13,23 @@ registration = (mimosaConfig, register) ->
     register ['postBuild'], 'beforeOptimize', _buildOptimizeConfigs
 
 _buildOptimizeConfigs = (mimosaConfig, options, next) ->
-  rcs = options.runConfigs ? []
+
+  if fs.existsSync mimosaConfig.libraryPackage.outFolderFull
+    wrench.rmdirSyncRecursive mimosaConfig.libraryPackage.outFolderFull
+    logger.info "library-package removed outFolder [[ #{mimosaConfig.libraryPackage.outFolderFull} ]]"
+
   packs = mimosaConfig.libraryPackage.packaging
-
-  if packs.shimmedNoDependencies
-    rcs.push _generateConfig(mimosaConfig, _shimmedNoDependencies)
-
+  rcs = []
   if packs.shimmedWithDependencies
     rcs.push _generateConfig(mimosaConfig, _shimmedWithDependencies)
-
   if packs.noShimNoDependencies
     rcs.push _generateConfig(mimosaConfig, _noShimNoDependencies)
-
   if packs.noShimWithDependencies
     rcs.push _generateConfig(mimosaConfig, _noShimWithDependencies)
-
-  #_makeOutputFolder mimosaConfig.libraryPackage.outFolderFull
+  ###
+  if packs.shimmedNoDependencies
+    rcs.push _generateConfig(mimosaConfig, _shimmedNoDependencies)
+  ###
 
   options.runConfigs = rcs
   next()
@@ -53,14 +55,15 @@ _generateConfig = (mimosaConfig, cb) ->
 
   rc
 
+###
 _shimmedNoDependencies = (mimosaConfig, rc) ->
-  console.log mimosaConfig.libraryPackage
   rc.out = path.join mimosaConfig.libraryPackage.outFolder, "shimmedNoDependencies", mimosaConfig.libraryPackage.name
   rc.exclude = mimosaConfig.libraryPackage.removeDependencies
   rc.include = [mimosaConfig.libraryPackage.main]
   rc.insertRequire = [mimosaConfig.libraryPackage.main]
   rc.wrap = true
   rc.name = "almond"
+###
 
 _shimmedWithDependencies = (mimosaConfig, rc) ->
   rc.out = path.join mimosaConfig.libraryPackage.outFolder, "shimmedWithDependencies", mimosaConfig.libraryPackage.name
@@ -74,25 +77,23 @@ _noShimNoDependencies = (mimosaConfig, rc) ->
   rc.exclude = mimosaConfig.libraryPackage.removeDependencies
   rc.include = [mimosaConfig.libraryPackage.main]
   rc.name = mimosaConfig.libraryPackage.main
-  rc.wrap =
-    begin: "(function () {"
-    end: _noShimEndFragment mimosaConfig
+  rc.wrap = _noShimFragment mimosaConfig
 
 _noShimWithDependencies = (mimosaConfig, rc) ->
   rc.out = path.join mimosaConfig.libraryPackage.outFolder, "noShimWithDependencies", mimosaConfig.libraryPackage.name
   rc.include = [mimosaConfig.libraryPackage.main]
   rc.name = mimosaConfig.libraryPackage.main
-  rc.wrap =
-    begin: "(function () {"
-    end: _noShimEndFragment mimosaConfig
+  rc.wrap = _noShimFragment mimosaConfig
 
-_noShimEndFragment = (mimosaConfig) ->
-  """
-  define(['#{mimosaConfig.libraryPackage.main}'], function(lib) {
-    return lib;
-  });
-  })
-  """
+_noShimFragment = (mimosaConfig) ->
+  start: "(function () {"
+  end: """
+
+       define(['#{mimosaConfig.libraryPackage.main}'], function(lib) {
+         return lib;
+       });
+       })
+       """
 
 module.exports =
   registration:    registration
