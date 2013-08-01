@@ -19,6 +19,8 @@ By default this module will create three versions of your library.
 2. One for use in other RequireJS applications, but not containing libraries to be included by containing apps, like, for instance, jquery or Backbone.
 3. One for use in other RequireJS applications but containing all of the dependent libraries and code.
 
+This module executes during a `mimosa build` when both the `--optimize` and `--package` flags are used.
+
 ## Default Config
 
 ```
@@ -27,6 +29,10 @@ libraryPackage:
     shimmedWithDependencies:true
     noShimNoDependencies:true
     noShimWithDependencies:true
+  overrides:
+    shimmedWithDependencies: {}
+    noShimNoDependencies: {}
+    noShimWithDependencies: {}
   outFolder: "build"
   globalName: null
   name:null
@@ -38,6 +44,7 @@ libraryPackage:
 - `packaging.shimmedWithDependencies` - when set to `true` a fully batteries included version of your library is generated. Includes an AMD shim (Almond) and all dependencies.
 - `packaging.noShimNoDependencies` - when set to `true` an optimized file is created with shim and dependencies excluded.
 - `packaging.noShimWithDependencies` - when set to `true` an optimized file is created without a shim but including dependencies.
+- `overrides` - Properties passed the `overrides` objects are passed straight to the r.js optimizer for the given packaging type
 - `outFolder` - the name of the folder, relative to the root of the project, to place the packaged output.
 - `globalName` - Required if `shimmedWithDependencies` is set to `true`. The global name of the library for use in non module-managed situations. i.e. "$" or "Backbone"
 - `name` - Name of library. Ex: "jquery.foo.js". This will be used as the output file name for the optimization.  Required.

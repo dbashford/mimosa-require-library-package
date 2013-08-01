@@ -26,10 +26,6 @@ _buildOptimizeConfigs = (mimosaConfig, options, next) ->
     rcs.push _generateConfig(mimosaConfig, _noShimNoDependencies)
   if packs.noShimWithDependencies
     rcs.push _generateConfig(mimosaConfig, _noShimWithDependencies)
-  ###
-  if packs.shimmedNoDependencies
-    rcs.push _generateConfig(mimosaConfig, _shimmedNoDependencies)
-  ###
 
   options.runConfigs = rcs
   next()
@@ -54,16 +50,6 @@ _generateConfig = (mimosaConfig, cb) ->
   cb mimosaConfig, rc
 
   rc
-
-###
-_shimmedNoDependencies = (mimosaConfig, rc) ->
-  rc.out = path.join mimosaConfig.libraryPackage.outFolder, "shimmedNoDependencies", mimosaConfig.libraryPackage.name
-  rc.exclude = mimosaConfig.libraryPackage.removeDependencies
-  rc.include = [mimosaConfig.libraryPackage.main]
-  rc.insertRequire = [mimosaConfig.libraryPackage.main]
-  rc.wrap = true
-  rc.name = "almond"
-###
 
 _shimmedWithDependencies = (mimosaConfig, rc) ->
   rc.out = path.join mimosaConfig.libraryPackage.outFolder, "shimmedWithDependencies", mimosaConfig.libraryPackage.name

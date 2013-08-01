@@ -5,20 +5,18 @@ path = require "path"
 exports.defaults = ->
   libraryPackage:
     packaging:
-      # shimmedNoDependencies: true
       shimmedWithDependencies: true
       noShimNoDependencies: true
       noShimWithDependencies: true
+    overrides:
+      shimmedWithDependencies: {}
+      noShimNoDependencies: {}
+      noShimWithDependencies: {}
     outFolder: "build"
     globalName: null
     name: null
     main: null
     removeDependencies: []
-
-# - "shimmedNoDependencies" excludes dependencies configured with the removeDependencies
-# property below, and includes an AMD shim (Almond) for use when exporting the library to
-# non-AMD settings.
-# shimmedNoDependencies:true
 
 exports.placeholder = ->
   """
@@ -36,9 +34,17 @@ exports.placeholder = ->
       # listed in removeDependencies
       ###
       # packaging:
-        # shimmedWithDependencies:true
-        # noShimNoDependencies:true
-        # noShimWithDependencies:true
+        # shimmedWithDependencies: true
+        # noShimNoDependencies: true
+        # noShimWithDependencies: true
+      ###
+      # Properties passed into the objects below are passed straight to the r.js optimizer for
+      # the given packaging type
+      ###
+      # overrides:
+        # shimmedWithDependencies: {}
+        # noShimNoDependencies: {}
+        # noShimWithDependencies: {}
       # outFolder: "build"      # the name of the folder, relative to the root of the project,
                                 # to place the packaged output.
       # globalName: null        # Required if shimmedWithDependencies is set to true. The global
@@ -58,7 +64,6 @@ exports.validate = (config, validators) ->
   if validators.ifExistsIsObject(errors, "libraryPackage config", config.libraryPackage)
     if validators.ifExistsIsObject(errors, "libraryPackage.packaging", config.libraryPackage.packaging)
       p = config.libraryPackage.packaging
-      # validators.booleanMustExist(errors, "libraryPackage.packaging.shimmedNoDependencies", p.shimmedNoDependencies)
       if validators.booleanMustExist(errors, "libraryPackage.packaging.shimmedWithDependencies", p.shimmedWithDependencies)
         if p.shimmedWithDependencies
           validators.stringMustExist(errors, "libraryPackage.globalName", config.libraryPackage.globalName)
@@ -69,6 +74,11 @@ exports.validate = (config, validators) ->
       config.libraryPackage.outFolderFull = path.join config.root, config.libraryPackage.outFolder
     validators.stringMustExist(errors, "libraryPackage.name", config.libraryPackage.name)
     validators.stringMustExist(errors, "libraryPackage.main", config.libraryPackage.main)
+
+    if validators.ifExistsIsObject(errors, "libraryPackage.overrides", config.libraryPackage.overrides)
+      validators.ifExistsIsObject(errors, "libraryPackage.overrides.shimmedWithDependencies", config.libraryPackage.overrides.shimmedWithDependencies)
+      validators.ifExistsIsObject(errors, "libraryPackage.overrides.noShimNoDependencies", config.libraryPackage.overrides.noShimNoDependencies)
+      validators.ifExistsIsObject(errors, "libraryPackage.overrides.noShimWithDependencies", config.libraryPackage.overrides.noShimWithDependencies)
 
     validators.isArrayOfStrings(errors, "libraryPackage.removeDependencies", config.libraryPackage.removeDependencies)
 
