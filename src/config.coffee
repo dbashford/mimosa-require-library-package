@@ -15,7 +15,6 @@ exports.defaults = ->
     main: null
     removeDependencies: []
 
-
 # - "shimmedNoDependencies" excludes dependencies configured with the removeDependencies
 # property below, and includes an AMD shim (Almond) for use when exporting the library to
 # non-AMD settings.
@@ -27,10 +26,10 @@ exports.placeholder = ->
 
     # libraryPackage:           # Configuration for library packaging module
       ###
-      # "packaging" provides four options for packaging your library. By default all are enabled.
+      # "packaging" provides three options for packaging your library. By default all are enabled.
       # Each option will deliver the compiled asset to a folder named for the packaging type.
       # - "shimmedWithDependencies" a fully batteries included version of your library. Includes
-      # an AMD shim (Almond) and does not exclude any dependencies.
+      # an AMD shim (Almond) and includes all dependencies.
       # - "noShimNoDependencies" does not provide an AMD shim and excludes those dependencies
       # listed in removeDependencies
       # - "noShimWithDependencies" does not provide a shim and does not excluded dependencies
