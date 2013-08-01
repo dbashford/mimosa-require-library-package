@@ -5,6 +5,7 @@ fs = require "fs"
 
 logger = require "logmimosa"
 wrench = require "wrench"
+_ = require "lodash"
 
 config = require './config'
 
@@ -69,6 +70,7 @@ _shimmedWithDependencies = (mimosaConfig, rc) ->
          return require('#{mimosaConfig.libraryPackage.main}');
          }))
          """
+  _.extend(rc, mimosaConfig.libraryPackage.overrides.shimmedWithDependencies)
 
 _noShimNoDependencies = (mimosaConfig, rc) ->
   rc.out = path.join mimosaConfig.libraryPackage.outFolder, "noShimNoDependencies", mimosaConfig.libraryPackage.name
@@ -76,12 +78,16 @@ _noShimNoDependencies = (mimosaConfig, rc) ->
   rc.include = [mimosaConfig.libraryPackage.main]
   rc.name = mimosaConfig.libraryPackage.main
   rc.wrap = _noShimFragment mimosaConfig
+  _.extend(rc, mimosaConfig.libraryPackage.overrides.noShimNoDependencies)
+
 
 _noShimWithDependencies = (mimosaConfig, rc) ->
   rc.out = path.join mimosaConfig.libraryPackage.outFolder, "noShimWithDependencies", mimosaConfig.libraryPackage.name
   rc.include = [mimosaConfig.libraryPackage.main]
   rc.name = mimosaConfig.libraryPackage.main
   rc.wrap = _noShimFragment mimosaConfig
+  _.extend(rc, mimosaConfig.libraryPackage.overrides.noShimWithDependencies)
+
 
 _noShimFragment = (mimosaConfig) ->
   start: "(function () {"

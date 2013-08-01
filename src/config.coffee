@@ -38,8 +38,9 @@ exports.placeholder = ->
         # noShimNoDependencies: true
         # noShimWithDependencies: true
       ###
-      # Properties passed into the objects below are passed straight to the r.js optimizer for
-      # the given packaging type
+      # Properties passed the `overrides` objects are passed straight to the r.js optimizer for the
+      # given packaging type. Any settings in `overrides` will overwrite all other settings,
+      # including, for instance, the `name` property.
       ###
       # overrides:
         # shimmedWithDependencies: {}
