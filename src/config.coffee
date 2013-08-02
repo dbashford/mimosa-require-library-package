@@ -12,6 +12,7 @@ exports.defaults = ->
       shimmedWithDependencies: {}
       noShimNoDependencies: {}
       noShimWithDependencies: {}
+    mainConfigFile: null
     outFolder: "build"
     globalName: null
     name: null
@@ -54,6 +55,12 @@ exports.placeholder = ->
       # name:null               # Name of library.  Ex: "jquery.foo.js". This will be used as the
                                 # output file name for the optimization.  Required.
       # main:null               # The AMD path to the root/entry point of your library.
+      # mainConfigFile: null    # The location of the requirejs configuration. Can be absolute or
+                                # relative to the watch.compiledDir directory. By default, if
+                                # require.commonConfig is used and exists, this is set to that
+                                # file. If mainConfigFile is not provided, and
+                                # require.commonConfig does not exist, this is set to the main
+                                # file.
       # removeDependencies: []  # A list of AMD paths to dependencies to exclude from the library.
                                 # For instance, "jquery" or "vendor/openlayers". Libraries you
                                 # expect users of the library to include themselves.
@@ -75,6 +82,9 @@ exports.validate = (config, validators) ->
       config.libraryPackage.outFolderFull = path.join config.root, config.libraryPackage.outFolder
     validators.stringMustExist(errors, "libraryPackage.name", config.libraryPackage.name)
     validators.stringMustExist(errors, "libraryPackage.main", config.libraryPackage.main)
+
+    if validators.ifExistsIsString(errors, "libraryPackage.mainConfigFile", config.libraryPackage.mainConfigFile)
+      config.libraryPackage.mainConfigFileFull = path.join config.watch.compiledDir, config.libraryPackage.mainConfigFile
 
     if validators.ifExistsIsObject(errors, "libraryPackage.overrides", config.libraryPackage.overrides)
       validators.ifExistsIsObject(errors, "libraryPackage.overrides.shimmedWithDependencies", config.libraryPackage.overrides.shimmedWithDependencies)

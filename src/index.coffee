@@ -32,7 +32,9 @@ _buildOptimizeConfigs = (mimosaConfig, options, next) ->
   next()
 
 _generateConfig = (mimosaConfig, cb) ->
-  configFile = if fs.existsSync mimosaConfig.require?.commonConfig
+  configFile = if mimosaConfig.libraryPackage.mainConfigFileFull
+    mimosaConfig.libraryPackage.mainConfigFileFull
+  else if fs.existsSync mimosaConfig.require?.commonConfig
     mimosaConfig.require.commonConfig
   else
     mimosaConfig.libraryPackage.main

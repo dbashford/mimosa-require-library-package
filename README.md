@@ -37,6 +37,7 @@ libraryPackage:
   globalName: null
   name:null
   main:null
+  mainConfigFile: null
   removeDependencies: []
 ```
 
@@ -49,4 +50,5 @@ libraryPackage:
 - `globalName` - Required if `shimmedWithDependencies` is set to `true`. The global name of the library for use in non module-managed situations. i.e. "$" or "Backbone"
 - `name` - Name of library. Ex: "jquery.foo.js". This will be used as the output file name for the optimization.  Required.
 - `main` - The AMD path to the root/entry point of your library.
+- `mainConfigFile` - A string, the location of the requirejs configuration. Relative to the `watch.compiledDir` directory. By default, if `require.commonConfig` (from the mimosa-require module) is used and exists, this is set to that file. If `mainConfigFile` is not provided, and `require.commonConfig` does not exist, this is set to the `main` file.
 - `removeDependencies` - A list of AMD paths to dependencies to exclude from the library. For instance, "jquery" or "vendor/openlayers". Libraries you expect users of the library to include themselves.
