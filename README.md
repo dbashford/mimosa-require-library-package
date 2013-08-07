@@ -34,6 +34,7 @@ libraryPackage:
     noShimNoDependencies: {}
     noShimWithDependencies: {}
   outFolder: "build"
+  cleanOutFolder: true
   globalName: null
   name:null
   main:null
@@ -47,6 +48,7 @@ libraryPackage:
 - `packaging.noShimWithDependencies` - when set to `true` an optimized file is created without a shim but including dependencies.
 - `overrides` - Properties passed the `overrides` objects are passed straight to the r.js optimizer for the given packaging type. Any settings in `overrides` will overwrite all other settings, including, for instance, the `name` property.
 - `outFolder` - the name of the folder, relative to the root of the project, to place the packaged output.
+- `cleanOutFolder` - when or not to clean the `outFolder` as part of a build
 - `globalName` - Required if `shimmedWithDependencies` is set to `true`. The global name of the library for use in non module-managed situations. i.e. "$" or "Backbone"
 - `name` - Name of library. Ex: "jquery.foo.js". This will be used as the output file name for the optimization.  Required.
 - `main` - The AMD path to the root/entry point of your library.

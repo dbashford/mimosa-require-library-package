@@ -13,12 +13,18 @@ registration = (mimosaConfig, register) ->
   if mimosaConfig.isOptimize and mimosaConfig.isPackage
     register ['postBuild'], 'beforeOptimize', _buildOptimizeConfigs
 
-_buildOptimizeConfigs = (mimosaConfig, options, next) ->
 
+  if mimosaConfig.libraryPackage.cleanOutFolder
+    register ['postClean'], 'init', _cleanFolder
+
+_cleanFolder = (mimosaConfig, options, next) ->
   if fs.existsSync mimosaConfig.libraryPackage.outFolderFull
     wrench.rmdirSyncRecursive mimosaConfig.libraryPackage.outFolderFull
     logger.info "library-package removed outFolder [[ #{mimosaConfig.libraryPackage.outFolderFull} ]]"
 
+  next()
+
+_buildOptimizeConfigs = (mimosaConfig, options, next) ->
   packs = mimosaConfig.libraryPackage.packaging
   rcs = []
   if packs.shimmedWithDependencies

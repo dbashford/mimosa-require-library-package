@@ -14,6 +14,7 @@ exports.defaults = ->
       noShimWithDependencies: {}
     mainConfigFile: null
     outFolder: "build"
+    cleanOutFolder:true
     globalName: null
     name: null
     main: null
@@ -49,6 +50,8 @@ exports.placeholder = ->
         # noShimWithDependencies: {}
       # outFolder: "build"      # the name of the folder, relative to the root of the project,
                                 # to place the packaged output.
+      # cleanOutFolder: true    # whether or not to clean the output folder when mimosa performs a
+                                # clean
       # globalName: null        # Required if shimmedWithDependencies is set to true. The global
                                 # name of the library for use in non module-managed situations.
                                 # i.e. "$" or "Backbone"
@@ -77,6 +80,8 @@ exports.validate = (config, validators) ->
           validators.stringMustExist(errors, "libraryPackage.globalName", config.libraryPackage.globalName)
       validators.booleanMustExist(errors, "libraryPackage.packaging.noShimNoDependencies", p.noShimNoDependencies)
       validators.booleanMustExist(errors, "libraryPackage.packaging.noShimWithDependencies", p.noShimWithDependencies)
+
+    validators.ifExistsIsBoolean(errors, "libraryPackage.cleanOutFolder", config.libraryPackage.cleanOutFolder)
 
     if validators.ifExistsIsString(errors, "libraryPackage.outFolder", config.libraryPackage.outFolder)
       config.libraryPackage.outFolderFull = path.join config.root, config.libraryPackage.outFolder
