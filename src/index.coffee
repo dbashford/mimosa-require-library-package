@@ -18,9 +18,12 @@ registration = (mimosaConfig, register) ->
     register ['postClean'], 'init', _cleanFolder
 
 _cleanFolder = (mimosaConfig, options, next) ->
-  if fs.existsSync mimosaConfig.libraryPackage.outFolderFull
-    wrench.rmdirSyncRecursive mimosaConfig.libraryPackage.outFolderFull
-    logger.info "library-package removed outFolder [[ #{mimosaConfig.libraryPackage.outFolderFull} ]]"
+  outFolderFull = mimosaConfig.libraryPackage.outFolderFull
+
+  if fs.existsSync outFolderFull
+    if outFolderFull isnt mimosaConfig.watch.compiledDir
+      wrench.rmdirSyncRecursive outFolderFull
+      logger.info "library-package removed [[ #{outFolderFull} ]]"
 
   next()
 
