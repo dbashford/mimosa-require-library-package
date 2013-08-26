@@ -5,7 +5,7 @@ mimosa-require-library-package
 
 Use this module with Mimosa to package library code built using AMD/RequireJS into a single file for use in other applications.  This module, when used in tandem with the `mimosa-require` module will package up several versions of your library for distribution and use outside of your library project.
 
-For more information regarding Mimosa, see http://mimosajs.com
+For more information regarding Mimosa, see http://mimosa.io
 
 ## Usage
 
