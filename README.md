@@ -16,7 +16,7 @@ Add `'require-library-package'` to your list of modules _AFTER_ the `require` mo
 By default this module will create three versions of your library.
 
 1. One with the Almond AMD shim and a wrapper that allows for exporting your library as a global property to be used in containing apps.
-2. One for use in other RequireJS applications, but not containing libraries to be included by containing apps, like, for instance, jquery or Backbone.
+2. One for use in other RequireJS applications, **but not containing libraries specified in the `removeDependencies` array ** - for instance JQuery or Backbone.
 3. One for use in other RequireJS applications but containing all of the dependent libraries and code.
 
 This module executes during a `mimosa build` when both the `--optimize` and `--package` flags are used.
