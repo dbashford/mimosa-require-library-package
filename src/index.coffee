@@ -3,7 +3,6 @@
 path = require "path"
 fs = require "fs"
 
-logger = require "logmimosa"
 wrench = require "wrench"
 _ = require "lodash"
 
@@ -23,7 +22,7 @@ _cleanFolder = (mimosaConfig, options, next) ->
   if fs.existsSync outFolderFull
     if outFolderFull isnt mimosaConfig.watch.compiledDir
       wrench.rmdirSyncRecursive outFolderFull
-      logger.info "library-package removed [[ #{outFolderFull} ]]"
+      mimosaConfig.log.info "library-package removed [[ #{outFolderFull} ]]"
 
   next()
 
